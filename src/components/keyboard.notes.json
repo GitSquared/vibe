@@ -1,0 +1,29 @@
+{
+	"keys": [
+		{ "sharp": false, "hz": 130.8128 },
+		{ "sharp": true, "hz": 138.5913, "kbdCode": "KeyQ" },
+		{ "sharp": false, "hz": 146.8324, "kbdCode": "KeyA" },
+		{ "sharp": true, "hz": 155.5635, "kbdCode": "KeyW" },
+		{ "sharp": false, "hz": 164.8138, "kbdCode": "KeyS" },
+		{ "sharp": false, "hz": 174.6141, "kbdCode": "KeyD" },
+		{ "sharp": true, "hz": 184.9972, "kbdCode": "KeyR" },
+		{ "sharp": false, "hz": 195.9977, "kbdCode": "KeyF" },
+		{ "sharp": true, "hz": 207.6523, "kbdCode": "KeyT" },
+		{ "sharp": false, "hz": 220, "kbdCode": "KeyG" },
+		{ "sharp": true, "hz": 233.0819, "kbdCode": "KeyY" },
+		{ "sharp": false, "hz": 246.9417, "kbdCode": "KeyH" },
+
+		{ "sharp": false, "hz": 261.6256, "kbdCode": "KeyJ" },
+		{ "sharp": true, "hz": 277.1826, "kbdCode": "KeyI" },
+		{ "sharp": false, "hz": 293.6648, "kbdCode": "KeyK" },
+		{ "sharp": true, "hz": 311.1270, "kbdCode": "KeyO" },
+		{ "sharp": false, "hz": 329.6276, "kbdCode": "KeyL" },
+		{ "sharp": false, "hz": 349.2282, "kbdCode": "Semicolon", "label": ";" },
+		{ "sharp": true, "hz": 369.9944, "kbdCode": "BracketLeft", "label": "[" },
+		{ "sharp": false, "hz": 391.9954, "kbdCode": "Quote", "label": "'" },
+		{ "sharp": true, "hz": 415.3047, "kbdCode": "BracketRight", "label": "]" },
+		{ "sharp": false, "hz": 440, "kbdCode": "Backslash", "label": "\\" },
+		{ "sharp": true, "hz": 466.1638 },
+		{ "sharp": false, "hz": 493.8833 }
+	]
+}

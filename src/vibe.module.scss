@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Monoton&display=swap');
+
+.container {
+	height: 100%;
+	width: 100%;
+	background: #15120f;
+	color: #b0b0b0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Monoton', cursive;
+}
+
+p, span, label {
+	font-family: 'Libre Baskerville', serif;
+}
+
+@keyframes background-move {
+	from { background-position: 0px; }
+	to { background-position: 200px; }
+}
+
+.title {
+	font-size: 4rem;
+	font-style: italic;
+	background: linear-gradient(to right, #ad8266, #eaa377, #ad8266);
+	background-size: 200px 100%;
+	animation: background-move 2s linear infinite;
+	background-clip: text;
+	color: transparent;
+
+	strong {
+		position: relative;
+		left: -12px;
+	}
+}

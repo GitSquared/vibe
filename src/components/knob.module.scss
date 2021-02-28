@@ -1,0 +1,75 @@
+.container {
+	position: relative;
+	width: 50px;
+	height: 75px;
+	padding-top: 48px;
+
+	span {
+		display: block;
+		text-align: center;
+		text-transform: uppercase;
+		font-size: 10px;
+	}
+}
+
+.valueMeter {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	border-radius: 100%;
+
+	path {
+		fill: none;
+		stroke: #eaa377;
+		stroke-width: 1.5px;
+		stroke-linecap: round;
+		stroke-dasharray: 230% 500%;
+		// stroke-dashoffset: 230%;
+		stroke-dashoffset: 140%;
+	}
+}
+
+.knob {
+	cursor: pointer;
+	position: absolute;
+	top: #{((50 - 34) / 2)}px;
+	left: #{((50 - 34) / 2)}px;
+	width: 34px;
+	height: 34px;
+	border-radius: 100%;
+	background: linear-gradient(-45deg, #ad8266, #eaa377);
+	border: 2px solid #8e644a;
+
+	&::before {
+		content: "";
+		display: block;
+		position: relative;
+		top: -2px;
+		border-top: 2px solid black;
+		width: 3px;
+		height: 40%;
+		margin: 0 auto;
+		background: #15120f;
+		border-bottom-left-radius: 2px;
+		border-bottom-right-radius: 2px;
+	}
+}
+
+.tooltip {
+	cursor: ew-resize;
+	position: fixed;
+	z-index: 150;
+	background: #ad8266;
+	color: black;
+	padding: 2px 5px;
+
+	::before {
+		content: "< ";
+	}
+
+	::after {
+		content: " >";
+	}
+}
