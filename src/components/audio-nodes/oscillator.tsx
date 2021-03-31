@@ -6,6 +6,7 @@ const noteJumpConstant = 1.059463
 interface OscillatorProps extends GeneratorAudioComponentProps {
 	freq: number
 	freqMod: number
+	waveform: 'sine' | 'square' | 'sawtooth' | 'triangle' | PeriodicWave
 }
 
 export default function Oscillator(props: OscillatorProps) {
@@ -44,6 +45,16 @@ export default function Oscillator(props: OscillatorProps) {
 
 		osc.frequency.setValueAtTime(freq, props.ctx.currentTime)
 	}, [osc, props.freq, props.freqMod, props.ctx])
+
+	useEffect(() => {
+		if (osc === null) return
+
+		if (props.waveform instanceof PeriodicWave) {
+			osc.setPeriodicWave(props.waveform)
+		} else {
+			osc.type = props.waveform
+		}
+	}, [osc, props.waveform])
 
 	return <></>
 }

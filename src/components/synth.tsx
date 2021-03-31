@@ -13,7 +13,6 @@ import styles from './synth.module.scss'
   * - Multiple oscillators
   * - Filters
   * - ADSR envelope
-  * - Change waveshapes
   * - Beat machine
 */
 
@@ -35,6 +34,8 @@ export default function Synth() {
 	}
 
 	const [freqMod, setFreqMod] = useState(0)
+	const [waveform, setWaveform] = useState(0)
+	const waveforms = ['sine', 'square', 'sawtooth', 'triangle']
 
 	const [gainNode] = useState(audioCtx.createGain())
 	const [gain, setGain] = useState(0.8)
@@ -55,7 +56,7 @@ export default function Synth() {
 		<div style={{ display: 'none' }}>
 			{/* Hidden wiring */}
 			{playedFreqs.map((freq, i) => (
-				<Oscillator ctx={audioCtx} out={gainNode} freq={freq} freqMod={freqMod} key={i}/>
+				<Oscillator key={i} ctx={audioCtx} out={gainNode} freq={freq} freqMod={freqMod} waveform={waveforms[waveform]}/>
 			))}
 		</div>
 		<div>
@@ -65,6 +66,7 @@ export default function Synth() {
 		<div>
 			{/* Knobs panel */}
 			<Knob label="freq" value={freqMod} onChange={setFreqMod} min={-1} max={1} step={0.01}/>
+			<Knob label="wave" value={waveform} onChange={setWaveform} min={0} max={3}/>
 			<Knob label="gain" value={gain} onChange={setGain} min={0} max={1} step={0.01}/>
 		</div>
 		<div>
