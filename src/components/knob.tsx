@@ -64,13 +64,15 @@ export default function Knob(props: KnobProps) {
 	useEffect(() => {
 		if (!knobRef.current) return
 
+		const knob = knobRef.current
+
 		const disableMenu = (e: MouseEvent) => {
 			e.preventDefault()
 		}
-		knobRef.current.addEventListener('contextmenu', disableMenu)
+		knob.addEventListener('contextmenu', disableMenu)
 
 		return () => {
-			knobRef.current?.removeEventListener('contextmenu', disableMenu)
+			knob?.removeEventListener('contextmenu', disableMenu)
 		}
 	}, [knobRef])
 
