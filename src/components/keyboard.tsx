@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+import type { MouseEvent, TouchEvent } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { keys as KEYS } from './keyboard.notes.json'
 import styles from './keyboard.module.scss'
 import classNames from 'classnames/bind'
@@ -21,24 +22,26 @@ function Key(props: KeyProps) {
 	const [pressed, setPressed] = useState(false)
 	const [clearFn, setClearFn] = useState<(() => void) | null>(null)
 
-	function handleDown(e: any) {
+	const { onKeyPress, note } = props
+
+	const handleDown = useCallback((e: KeyboardEvent | MouseEvent | TouchEvent) => {
 		e.preventDefault()
-		const fn = props.onKeyPress(props.note)
+		const fn = onKeyPress(note)
 		// Little trick for storing functions in state
 		setClearFn(() => () => {
 			fn()
 		})
 		setPressed(true)
-	}
+	}, [onKeyPress, note])
 
-	function handleUp(e: any) {
+	const handleUp = useCallback((e: KeyboardEvent | MouseEvent | TouchEvent) => {
 		e.preventDefault()
 		setPressed(false)
 		if (typeof clearFn === 'function') {
 			clearFn()
 			setClearFn(null)
 		}
-	}
+	}, [clearFn])
 
 	useEffect(() => {
 		if (!props.kbdCode) return
@@ -63,7 +66,7 @@ function Key(props: KeyProps) {
 			document.body.removeEventListener('keydown', kbdDown)
 			document.body.removeEventListener('keyup', kbdUp)
 		}
-	})
+	}, [props.kbdCode, handleDown, handleUp, pressed])
 
 	let label = props.label
 	if (!props.label && props.kbdCode) {

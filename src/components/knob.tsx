@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import styles from './knob.module.scss'
 
 interface KnobProps {
@@ -15,19 +15,21 @@ export default function Knob(props: KnobProps) {
 	const [tooltip, setTooltip] = useState(false)
 	const [curPos, setCurPos] = useState([0, 0])
 
-	function handleDrag(e: MouseEvent | ReactMouseEvent) {
+	const { label, value, min, max, step, onChange } = props
+
+	const handleDrag = useCallback((e: MouseEvent | ReactMouseEvent) => {
 		setCurPos([e.clientX, e.clientY])
 
 		const m = e.movementX
 		if (m === 0) return
 
-		let newV = props.value + m * (props.step ?? 1)
+		let newV = value + m * (step ?? 1)
 
-		if (newV > props.max) newV = props.max
-		if (newV < props.min) newV = props.min
+		if (newV > max) newV = max
+		if (newV < min) newV = min
 
-		props.onChange(Math.round(newV * 100) / 100)
-	}
+		onChange(Math.round(newV * 100) / 100)
+	}, [onChange, value, max, min, step])
 
 
 	useEffect(() => {
@@ -38,7 +40,7 @@ export default function Knob(props: KnobProps) {
 		return () => {
 			document.body.removeEventListener('mousemove', handleDrag)
 		}
-	}, [tooltip, props])
+	}, [tooltip, handleDrag])
 
 	return <div className={styles.container}>
 		<svg className={styles.valueMeter} viewBox="-6.4 -6.4 12.8 12.8">
@@ -59,8 +61,8 @@ export default function Knob(props: KnobProps) {
 				handleDrag(e)
 			}}
 		/>
-		{props.label &&
-			<span>{props.label}</span>
+		{label &&
+			<span>{label}</span>
 		}
 
 		{tooltip &&
@@ -72,7 +74,7 @@ export default function Knob(props: KnobProps) {
 				}}
 				onMouseUp={() => { setTooltip(false) }}
 			>
-				<span>{props.value}</span>
+				<span>{value}</span>
 			</div>
 		}
 
