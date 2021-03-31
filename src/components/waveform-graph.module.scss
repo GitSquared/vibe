@@ -1,0 +1,31 @@
+.container {
+	background: #20201f;
+	padding: 0 12px 12px;
+	border: 3px double #ad8266;
+	border-radius: 5px;
+}
+
+.title {
+	margin: 2px 0;
+	display: block;
+	text-align: center;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.canvasContainer {
+	width: 180px;
+	height: 50px;
+	position: relative;
+}
+
+.canvasScreen {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: radial-gradient(#ffdeca, #b99984);
+	box-shadow: 0px 0px 7px rgba(0,0,0,0.2) inset;
+	mix-blend-mode: hard-light;
+}

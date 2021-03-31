@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Oscillator from './audio-nodes/oscillator'
+import WaveformGraph from './waveform-graph'
 import Knob from './knob'
 import Keyboard from './keyboard'
 import styles from './synth.module.scss'
@@ -51,11 +52,15 @@ export default function Synth() {
 	}, [audioCtx, gainNode])
 
 	return <div className={styles.container}>
-		<div>
+		<div style={{ display: 'none' }}>
 			{/* Hidden wiring */}
 			{playedFreqs.map((freq, i) => (
 				<Oscillator ctx={audioCtx} out={gainNode} freq={freq} freqMod={freqMod} key={i}/>
 			))}
+		</div>
+		<div>
+			{/* Visualizations */}
+			<WaveformGraph ctx={audioCtx} in={gainNode}/>
 		</div>
 		<div>
 			{/* Knobs panel */}

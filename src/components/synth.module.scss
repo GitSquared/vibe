@@ -1,5 +1,5 @@
 .container {
-	> div:nth-child(2) {
+	> div:not(:last-child) {
 		display: flex;
 		flex-direction: row;
 		gap: 15px;
