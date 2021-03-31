@@ -44,6 +44,7 @@ function Key(props: KeyProps) {
 		if (!props.kbdCode) return
 
 		function kbdDown(e: KeyboardEvent) {
+			if (e.shiftKey || e.ctrlKey) return
 			if (e.code === props.kbdCode && !pressed) {
 				handleDown(e)
 			}
