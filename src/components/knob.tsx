@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from 'react'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import styles from './knob.module.scss'
 
 interface KnobProps {
@@ -12,10 +12,30 @@ interface KnobProps {
 }
 
 export default function Knob(props: KnobProps) {
+	const [isClick, setIsClick] = useState(false)
 	const [tooltip, setTooltip] = useState(false)
 	const [curPos, setCurPos] = useState([0, 0])
 
+	const knobRef = useRef<HTMLDivElement>(null)
+
 	const { label, value, min, max, step, onChange } = props
+
+	const handleClick = useCallback((e: MouseEvent | ReactMouseEvent) => {
+		let newV = value
+
+		if (e.button === 0) {
+			// left click
+			newV += (step ?? 1)
+		} else if (e.button === 2) {
+			// right click
+			newV -= (step ?? 1)
+		}
+
+		if (newV > max) newV = max
+		if (newV < min) newV = min
+
+		onChange(Math.round(newV * 100) / 100)
+	}, [onChange, value, max, min, step])
 
 	const handleDrag = useCallback((e: MouseEvent | ReactMouseEvent) => {
 		setCurPos([e.clientX, e.clientY])
@@ -31,7 +51,6 @@ export default function Knob(props: KnobProps) {
 		onChange(Math.round(newV * 100) / 100)
 	}, [onChange, value, max, min, step])
 
-
 	useEffect(() => {
 		if (!tooltip) return
 
@@ -42,7 +61,20 @@ export default function Knob(props: KnobProps) {
 		}
 	}, [tooltip, handleDrag])
 
-	return <div className={styles.container}>
+	useEffect(() => {
+		if (!knobRef.current) return
+
+		const disableMenu = (e: MouseEvent) => {
+			e.preventDefault()
+		}
+		knobRef.current.addEventListener('contextmenu', disableMenu)
+
+		return () => {
+			knobRef.current?.removeEventListener('contextmenu', disableMenu)
+		}
+	}, [knobRef])
+
+	return <div className={styles.container} ref={knobRef}>
 		<svg className={styles.valueMeter} viewBox="-6.4 -6.4 12.8 12.8">
 			<path
 				style={{
@@ -57,6 +89,10 @@ export default function Knob(props: KnobProps) {
 				transform: `rotate(${-140 + (props.value - props.min) / (props.max - props.min) * 280}deg)`
 			}}
 			onMouseDown={e => {
+				setIsClick(true)
+				window.setTimeout(() => {
+					setIsClick(false)
+				}, 100)
 				setTooltip(true)
 				handleDrag(e)
 			}}
@@ -72,7 +108,16 @@ export default function Knob(props: KnobProps) {
 					left: curPos[0] - 20,
 					top: curPos[1] - 20
 				}}
-				onMouseUp={() => { setTooltip(false) }}
+				onMouseUp={e => {
+					if (isClick) {
+						handleClick(e)
+						window.setTimeout(() => {
+							setTooltip(false)
+						}, 100)
+					} else {
+						setTooltip(false)
+					}
+				}}
 			>
 				<span>{value}</span>
 			</div>
