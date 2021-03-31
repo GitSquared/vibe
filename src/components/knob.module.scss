@@ -61,9 +61,11 @@
 	cursor: ew-resize;
 	position: fixed;
 	z-index: 150;
-	background: #ad8266;
+	background: #eaa377;
 	color: black;
 	padding: 2px 5px;
+	border-bottom: 10px solid #ad8266;
+	border-radius: 3px;
 
 	::before {
 		content: "< ";

@@ -9,7 +9,6 @@ import styles from './synth.module.scss'
   * https://reverb.com/news/synth-basics-101
   *
   * Todo:
-  * - Make knobs work for -X/X range values
   * - Multiple oscillators
   * - Filters
   * - ADSR envelope
