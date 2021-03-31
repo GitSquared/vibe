@@ -54,7 +54,7 @@ export default function Synth() {
 		<div>
 			{/* Hidden wiring */}
 			{playedFreqs.map((freq, i) => (
-				<Oscillator ctx={audioCtx} connectTo={gainNode} freq={freq} freqMod={freqMod} key={i}/>
+				<Oscillator ctx={audioCtx} out={gainNode} freq={freq} freqMod={freqMod} key={i}/>
 			))}
 		</div>
 		<div>

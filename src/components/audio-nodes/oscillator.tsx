@@ -1,9 +1,9 @@
-import type AudioComponentProps from './types'
+import type { GeneratorAudioComponentProps } from './types'
 import { useState, useEffect } from 'react'
 
 const noteJumpConstant = 1.059463
 
-interface OscillatorProps extends AudioComponentProps {
+interface OscillatorProps extends GeneratorAudioComponentProps {
 	freq: number
 	freqMod: number
 }
@@ -16,7 +16,7 @@ export default function Oscillator(props: OscillatorProps) {
 		const gain = props.ctx.createGain()
 
 		gain.gain.setValueAtTime(1, props.ctx.currentTime)
-		osc.connect(gain).connect(props.connectTo)
+		osc.connect(gain).connect(props.out)
 		osc.start()
 
 		setOsc(osc)
@@ -29,7 +29,7 @@ export default function Oscillator(props: OscillatorProps) {
 				gain.disconnect()
 			}, 1000)
 		}
-	}, [props.connectTo, props.ctx])
+	}, [props.out, props.ctx])
 
 	useEffect(() => {
 		if (osc === null) return
