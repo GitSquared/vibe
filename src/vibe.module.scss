@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Monoton&display=block');
 
 .container {
 	height: 100%;
@@ -12,7 +12,7 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Monoton', cursive;
+	font-family: 'Monoton', sans-serif;
 }
 
 p, span, label {
@@ -26,15 +26,12 @@ p, span, label {
 
 .title {
 	font-size: 4rem;
-	font-style: italic;
+	font-weight: 500;
+	font-style: normal;
 	background: linear-gradient(to right, #ad8266, #eaa377, #ad8266);
 	background-size: 200px 100%;
 	animation: background-move 2s linear infinite;
 	background-clip: text;
 	color: transparent;
-
-	strong {
-		position: relative;
-		left: -12px;
-	}
+	transform: skewX(345deg);
 }
