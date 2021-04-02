@@ -1,16 +1,16 @@
 export default interface AudioComponentProps {
-	ctx: AudioContext
+	onNodeSpawn?: (node: AudioNode) => void
 }
 
 export interface GeneratorAudioComponentProps extends AudioComponentProps {
-	out: AudioNode
+	out?: AudioNode
 }
 
 export interface OutputAudioComponentProps extends AudioComponentProps {
-	in: AudioNode
+	in?: AudioNode
 }
 
 export interface ProcessorAudioComponentProps extends AudioComponentProps {
-	in: AudioNode
-	out: AudioNode
+	in?: AudioNode
+	out?: AudioNode
 }

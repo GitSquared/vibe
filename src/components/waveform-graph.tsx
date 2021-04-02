@@ -1,17 +1,21 @@
-import type { OutputAudioComponentProps }  from './audio-nodes/types'
 import { useRef, useEffect } from 'react'
 import styles from './waveform-graph.module.scss'
 
-export default function WaveformGraph(props: OutputAudioComponentProps) {
+interface WaveformGraphProps {
+	node?: AnalyserNode
+}
+
+export default function WaveformGraph(props: WaveformGraphProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
+
+	const { node } = props
 
 	useEffect(() => {
 		const canvasCtx = canvasRef.current?.getContext('2d')
-		if (!canvasCtx || !canvasRef.current) return
+		if (!canvasCtx || !canvasRef.current || !node) return
 
-		const analyser = props.ctx.createAnalyser()
+		const analyser = node
 
-		analyser.fftSize = 2048
 		const waveBuf = new Uint8Array(analyser.frequencyBinCount)
 
 		const { width, height } = canvasRef.current
@@ -50,13 +54,10 @@ export default function WaveformGraph(props: OutputAudioComponentProps) {
 		}
 		timerId = requestAnimationFrame(tick)
 
-		props.in.connect(analyser)
-
 		return () => {
 			cancelAnimationFrame(timerId)
-			props.in.disconnect(analyser)
 		}
-	}, [props.ctx, props.in, canvasRef])
+	}, [node, canvasRef])
 
 	return <div className={styles.container}>
 		<span className={styles.title}>Waveform</span>

@@ -1,5 +1,6 @@
 import type { GeneratorAudioComponentProps } from './types'
-import { useState, useEffect } from 'react'
+import { useState, useContext, useCallback, useEffect } from 'react'
+import { AudioReactContext } from './audio-context'
 
 const noteJumpConstant = 1.059463
 
@@ -12,49 +13,62 @@ interface OscillatorProps extends GeneratorAudioComponentProps {
 export default function Oscillator(props: OscillatorProps) {
 	const [osc, setOsc] = useState<OscillatorNode | null>(null)
 
-	useEffect(() => {
-		const osc = props.ctx.createOscillator()
-		const gain = props.ctx.createGain()
+	const ctx = useContext(AudioReactContext)
 
-		gain.gain.setValueAtTime(1, props.ctx.currentTime)
-		osc.connect(gain).connect(props.out)
+	const { out, onNodeSpawn, freq, freqMod, waveform } = props
+
+	const callNodeSpawn = useCallback((node: AudioNode) => {
+		if (typeof onNodeSpawn === 'function') onNodeSpawn(node)
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [])
+
+	useEffect(() => {
+		if (!ctx) return
+
+		const osc = ctx.createOscillator()
+
 		osc.start()
 
 		setOsc(osc)
+		callNodeSpawn(osc)
 
 		return () => {
-			gain.gain.setTargetAtTime(0, props.ctx.currentTime, 0.2)
-			setTimeout(() => {
-				osc.stop()
-				osc.disconnect()
-				gain.disconnect()
-			}, 1000)
+			osc.stop()
 		}
-	}, [props.out, props.ctx])
+	}, [ctx, callNodeSpawn])
 
 	useEffect(() => {
-		if (osc === null) return
+		if (!osc || !out) return
 
-		let freq = props.freq
-		let mod = Math.abs(props.freqMod)
-		if (props.freqMod > 0) {
-			freq = freq * (noteJumpConstant * mod + 1)
-		} else {
-			freq = freq / (noteJumpConstant * mod + 1)
+		osc.connect(out)
+		return () => {
+			osc.disconnect()
 		}
-
-		osc.frequency.setValueAtTime(freq, props.ctx.currentTime)
-	}, [osc, props.freq, props.freqMod, props.ctx])
+	}, [osc, out])
 
 	useEffect(() => {
-		if (osc === null) return
+		if (!osc || !ctx) return
 
-		if (props.waveform instanceof PeriodicWave) {
-			osc.setPeriodicWave(props.waveform)
+		let tmpFreq: number = freq
+		let mod = Math.abs(freqMod)
+		if (freqMod > 0) {
+			tmpFreq = freq * (noteJumpConstant * mod + 1)
 		} else {
-			osc.type = props.waveform
+			tmpFreq = freq / (noteJumpConstant * mod + 1)
 		}
-	}, [osc, props.waveform])
+
+		osc.frequency.setValueAtTime(tmpFreq, ctx.currentTime)
+	}, [osc, freq, freqMod, ctx])
+
+	useEffect(() => {
+		if (!osc) return
+
+		if (waveform instanceof PeriodicWave) {
+			osc.setPeriodicWave(waveform)
+		} else {
+			osc.type = waveform
+		}
+	}, [osc, waveform])
 
 	return <></>
 }
